@@ -1,0 +1,24 @@
+{
+  "data": [
+    {
+      "_id": "597604b61558f86841256450", 
+      "destination_ip": null, 
+      "destination_port": 5060, 
+      "honeypot": "dionaea", 
+      "identifier": "f50d7fc4-7073-11e7-bbbf-06d79d77c81d", 
+      "protocol": "SipCall", 
+      "source_ip": "93.115.26.10", 
+      "source_port": 47703, 
+      "timestamp": "2017-07-24T14:31:17.126000"
+    }, 
+    {
+      "_id": "597604b91558f86841256455", 
+      "destination_ip": null, 
+      "destination_port": 80, 
+      "honeypot": "dionaea", 
+      "identifier": "f50d7fc4-7073-11e7-bbbf-06d79d77c81d", 
+      "protocol": "pcap", 
+      "source_ip": "198.20.101.166", 
+      "source_port": 46552, 
+      "timestamp": "2017-07-24T14:31:19.807000"
+    } ]}
