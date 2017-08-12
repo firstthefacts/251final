@@ -9,23 +9,22 @@ import re
 
 spark = SparkSession \
     .builder \
-    .appName("Python Spark SQL basic example") \
-    .config("spark.some.config.option", "some-value") \
+    .appName("HP_spark_processor") \
     .getOrCreate()
 
 # spark context
 sc = spark.sparkContext
 
 # inputFile="output.json"
-inputFile="out2.json"
 
-multiline_rdd=sc.wholeTextFiles(inputFile)
+multiline_rdd=sc.wholeTextFiles("output.json")
 type(multiline_rdd)
 multiline_rdd.take(1)
 #Remove all whitespace chars
 json_rdd = multiline_rdd.map(lambda x : x[1]).map(lambda x : re.sub(r"\s+", "", x, flags=re.UNICODE))
 
-jsonDF = spark.read.json(json_rdd)
+#jsonDF = spark.read.json(json_rdd)
+jsonDF = spark.read.json("out2.json")
 
 jsonDF.show()
 

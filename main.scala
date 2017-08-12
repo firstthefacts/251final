@@ -1,5 +1,9 @@
 import org.apache.spark._
+import org.apache.spark.SparkContext
+import org.apache.spark.SparkContext._
 import org.apache.spark.SparkConf
+import org.apache.spark.sql.SQLContext
+import org.apache.spark.sql.SparkSession
 
 //
 // first get the json data from an api call to the mongoDB
@@ -7,19 +11,22 @@ import org.apache.spark.SparkConf
 
 object Main extends App{
 
-  val rawDF = spark.read.json(sc.wholeTextFiles("output.json").values)
-
-  //
-  // the raw DF has a nested structure and all the data is in a single column
-  // so explode that column into rows
+  // create SparkConf
   
-  val exploded = rawDF.select(explode($"data"))
+  // val conf = new SparkConf().setAppName("honey-pot").setMaster("spark1")
+  val conf = new SparkConf().setAppName("honey-pot")
+  
+  val sc = new SparkContext(conf)
 
-  //
-  // now get rid of the superfluous col level of the data 
-  //
+  val sqlContext = new SQLContext(sc)
+  import sqlContext.implicits._
+  val spark =sqlContext.sparkSession
 
-  val goodDF = exploded.select($"col._id", $"col.destination_ip", $"col.destination_port", $"col.honeypot", $"col.identifier", $"col.protocol", $"col.source_ip", $"col.source_port", $"col.timestamp")
+  val rawDF = spark.read.json(sc.wholeTextFiles("data_file/small_session.json").values)
+
+  val flatDF=rawDF.select($"_id.*",$"destination_port",$"honeypot",$"hpfeed_id.*",$"identifier",$"protocol",$"source_ip",$"source_port",$"timestamp.*")
+
+  val renamedFlatDF =  flatDF.toDF("oid","destination_port","honeypot","hpfeed_oid","identifier","protocol","source_ip","source_port","date")
 
 }
 
